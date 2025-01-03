@@ -26,6 +26,7 @@ header > p {
   font-size: 0.875rem;
   max-width: 350px;
   color: #8E8E8E;
+  margin: 0 auto;
 }
 
 section.game-status {
@@ -45,4 +46,17 @@ section.game-status > h2 {
 
 section.game-status > p {
   margin: 5px;
+}
+
+section.language-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 350px;
+  gap: 5px;
+}
+
+section.language-chips > span {
+  padding: 4.5px;
+  border-radius: 4px;
 }
