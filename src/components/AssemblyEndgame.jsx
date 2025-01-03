@@ -1,10 +1,13 @@
-import React from "react"
+import { useState } from "react"
 import { languages } from "../languages"
 import LanguageChip from "./LanguageChip"
+import LetterBox from "./LetterBox";
 
 export default function AssemblyEndgame() {
 
-  const chips = languages.map( lang => 
+  const [currentWord, setCurrentWord] = useState("react");
+
+  const langChips = languages.map( lang => 
     <LanguageChip 
       key={lang.name}
       language={lang.name}
@@ -12,6 +15,8 @@ export default function AssemblyEndgame() {
       backgroundColor={lang.backgroundColor} 
     /> 
   )
+
+  const letterBox = currentWord.split("").map((letter, index) => <LetterBox key={index+1} letter={letter} />)
 
   return (
     <main>
@@ -24,7 +29,10 @@ export default function AssemblyEndgame() {
         <p>Well done!🎉</p>
       </section>
       <section className="language-chips">
-        {chips}
+        {langChips}
+      </section>
+      <section className="word">
+        {letterBox}
       </section>
     </main>
   )
