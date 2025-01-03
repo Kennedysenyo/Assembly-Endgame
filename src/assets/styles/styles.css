@@ -33,8 +33,8 @@ section {
   margin-block: 30px;
   max-width: 350px;
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
+ 
 }
 
 section.game-status {
@@ -97,4 +97,16 @@ section.keyboard > button {
   border: 1px solid #D7D7D7;
   cursor: pointer;
   border-radius: 3px;
+}
+
+button.new-game {
+  background-color: #11B5E5;
+  border: 1px solid #D7D7D7;
+  border-radius: 4px;
+  width: 225px;
+  height: 40px;
+  padding: 6px 12px;
+  display: block;
+  margin-inline: auto;
+  cursor: pointer;
 }

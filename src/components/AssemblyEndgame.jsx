@@ -3,6 +3,7 @@ import { languages } from "../languages"
 import LanguageChip from "./LanguageChip"
 import LetterBox from "./LetterBox";
 import KeyboardKey from "./KeyboardKey";
+import NewGameButton from "./NewGameButton";
 
 export default function AssemblyEndgame() {
 
@@ -53,6 +54,7 @@ export default function AssemblyEndgame() {
       <section className="keyboard">
         {keyboardElements}
       </section>
+      <NewGameButton />
     </main>
   )
 }
