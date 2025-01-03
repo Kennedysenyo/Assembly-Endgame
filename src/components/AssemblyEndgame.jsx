@@ -8,8 +8,19 @@ import NewGameButton from "./NewGameButton";
 export default function AssemblyEndgame() {
 
   const [currentWord, setCurrentWord] = useState("react");
+  const [guessedLetters, setGuessedLetters] = useState([])
+  console.log(guessedLetters)
+
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
+  const addGuessedLetter = (newLetter) => {
+    setGuessedLetters( prevLetters => 
+      prevLetters.includes(newLetter) ? 
+      prevLetters : 
+      [...prevLetters, newLetter])
+  }
+
+  // Renders the Programming Languages 
   const langChips = languages.map( lang => 
     <LanguageChip 
       key={lang.name}
@@ -19,6 +30,7 @@ export default function AssemblyEndgame() {
     /> 
   );
 
+  // Renders correctly guessed words
   const letterBox = currentWord.split("").map((letter, index) => 
     <LetterBox 
       key={index+1} 
@@ -26,10 +38,12 @@ export default function AssemblyEndgame() {
     />
   );
 
+  // Renders the Keyboard 
   const keyboardElements = alphabet.split("").map( key => 
     <KeyboardKey 
       key={key} 
       keyButton={key} 
+      getKey={addGuessedLetter}
     />
   )
 

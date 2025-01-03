@@ -2,6 +2,6 @@
 
 export default function KeyboardKey(props) {
   return(
-    <button>{props.keyButton}</button>
+    <button onClick={() => props.getKey(props.keyButton)}>{props.keyButton}</button>
   )
 }
