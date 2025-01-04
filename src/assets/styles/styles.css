@@ -86,7 +86,7 @@ section.keyboard {
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  max-width: 450px;
+  max-width: 400px;
 }
 
 section.keyboard > button {
@@ -109,4 +109,15 @@ button.new-game {
   display: block;
   margin-inline: auto;
   cursor: pointer;
+}
+
+.correct {
+  background-color: #10A95B !important;
+  color: white;
+}
+
+.incorrect {
+  background-color: #EC5D49 !important;
+  color: white;
+  opacity: 0.3;
 }

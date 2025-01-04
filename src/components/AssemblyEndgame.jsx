@@ -5,21 +5,38 @@ import LetterBox from "./LetterBox";
 import KeyboardKey from "./KeyboardKey";
 import NewGameButton from "./NewGameButton";
 
-export default function AssemblyEndgame() {
+const AssemblyEndgame = () => {
 
-  const [currentWord, setCurrentWord] = useState("react");
+  const [currentWord, setCurrentWord] = useState("react".split(""));
   const [guessedLetters, setGuessedLetters] = useState([])
-  console.log(guessedLetters)
-
-  const alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-  const addGuessedLetter = (newLetter) => {
-    setGuessedLetters( prevLetters => 
-      prevLetters.includes(newLetter) ? 
-      prevLetters : 
-      [...prevLetters, newLetter])
+  const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
+ 
+  
+  // Generates an array of keyboard keys object.
+  function setKeyboardKeys() {
+    const alph = "abcdefghijklmnopqrstuvwxyz";
+    return alph.split("").map((letter, index) => ({ id: index+1, letter: letter, state: ""}))
   }
+  
+  // Takes a letter arguement and updates state of alphabet and guessedLetters.
+  function addGuessedLetter(newLetter) {
+    if (guessedLetters.includes(newLetter)) return
 
+    setGuessedLetters( prevLetters => ([...prevLetters, newLetter]) ) 
+
+    setAlphabet( prevAlphabet => prevAlphabet.map( 
+      letter => letter.letter === newLetter ? 
+      (currentWord.includes(newLetter) 
+      ? {...letter, state: "correct"} 
+      : {...letter, state: "incorrect"}) : 
+      letter
+    ))    
+    
+  }
+  
+  
+  
+  
   // Renders the Programming Languages 
   const langChips = languages.map( lang => 
     <LanguageChip 
@@ -31,7 +48,7 @@ export default function AssemblyEndgame() {
   );
 
   // Renders correctly guessed words
-  const letterBox = currentWord.split("").map((letter, index) => 
+  const letterBox = currentWord.map((letter, index) => 
     <LetterBox 
       key={index+1} 
       letter={letter} 
@@ -39,10 +56,11 @@ export default function AssemblyEndgame() {
   );
 
   // Renders the Keyboard 
-  const keyboardElements = alphabet.split("").map( key => 
+  const keyboardElements = alphabet.map( key => 
     <KeyboardKey 
-      key={key} 
-      keyButton={key} 
+      key={key.id} 
+      keyButton={key.letter} 
+      state={key.state}
       getKey={addGuessedLetter}
     />
   )
@@ -72,3 +90,5 @@ export default function AssemblyEndgame() {
     </main>
   )
 }
+
+export default AssemblyEndgame;

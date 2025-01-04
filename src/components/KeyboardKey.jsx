@@ -1,7 +1,15 @@
+import clsx from "clsx";
 
+ const KeyboardKey = (props) => {
 
-export default function KeyboardKey(props) {
   return(
-    <button onClick={() => props.getKey(props.keyButton)}>{props.keyButton}</button>
+    <button 
+      className={clsx(props.state)}
+      onClick={() => props.getKey(props.keyButton)}
+    >
+      {props.keyButton}
+    </button>
   )
 }
+
+export default KeyboardKey;
