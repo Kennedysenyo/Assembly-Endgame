@@ -37,18 +37,17 @@ const AssemblyEndgame = () => {
       letter
     ))    
     
-  }
-  
-  
+  }  
   
   
   // Renders the Programming Languages 
-  const langChips = languages.map( lang => 
+  const langChips = languages.map( (lang, index) => 
     <LanguageChip 
       key={lang.name}
       language={lang.name}
       color={lang.color}
       backgroundColor={lang.backgroundColor} 
+      isLost={index < wrongGuessedCount}
     /> 
   );
 
