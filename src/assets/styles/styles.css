@@ -75,11 +75,15 @@ section.word {
 }
 
 section.word > span {
-  padding: 10px 15px;
+  width: 40px;
+  height: 40px;
   background-color: #323232;
   text-transform: uppercase;
   border-bottom: 1px solid #F9f4DA;
   font-size: 1.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 section.keyboard {

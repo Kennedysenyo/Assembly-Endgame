@@ -10,7 +10,6 @@ const AssemblyEndgame = () => {
   const [currentWord, setCurrentWord] = useState("react".split(""));
   const [guessedLetters, setGuessedLetters] = useState([])
   const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
- 
   
   // Generates an array of keyboard keys object.
   function setKeyboardKeys() {
@@ -51,7 +50,7 @@ const AssemblyEndgame = () => {
   const letterBox = currentWord.map((letter, index) => 
     <LetterBox 
       key={index+1} 
-      letter={letter} 
+      letter={guessedLetters.includes(letter) ? letter : ""} 
     />
   );
 
