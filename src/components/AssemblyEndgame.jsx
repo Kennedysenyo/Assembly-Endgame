@@ -11,6 +11,12 @@ const AssemblyEndgame = () => {
   const [guessedLetters, setGuessedLetters] = useState([])
   const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
   
+
+  const wrongGuessedCount = guessedLetters.filter( 
+    letter => !currentWord.includes(letter)).length;
+  console.log(wrongGuessedCount)
+    
+
   // Generates an array of keyboard keys object.
   function setKeyboardKeys() {
     const alph = "abcdefghijklmnopqrstuvwxyz";
