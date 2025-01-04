@@ -1,124 +1,166 @@
-import { useState } from "react"
-import { languages } from "../languages"
-import LanguageChip from "./LanguageChip"
+import { useEffect, useState } from "react";
+import { languages } from "../languages";
+import LanguageChip from "./LanguageChip";
 import LetterBox from "./LetterBox";
 import KeyboardKey from "./KeyboardKey";
 import NewGameButton from "./NewGameButton";
 import GameStatus from "./GameStatus";
 import clsx from "clsx";
+import { getFarewellText } from "../utils";
 
 const AssemblyEndgame = () => {
-
   const [currentWord, setCurrentWord] = useState("refactor".split(""));
-  const [guessedLetters, setGuessedLetters] = useState([])
-  const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
-  
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [alphabet, setAlphabet] = useState(() => setKeyboardKeys());
+  const [status, setStatus] = useState({
+    status: "",
+    details: ""
+  });
+  const [prevWrongGuessedCount, setPrevWrongGuessedCount] = useState(0);
+  const [lastGuessFeedback, setLastGuessFeedback] = useState("");
 
-  const wrongGuessedCount = guessedLetters.filter( 
-    letter => !currentWord.includes(letter)).length;
-  
-  const isGameWon = new Set(currentWord).size === 
-    guessedLetters.filter(letter => 
-      currentWord.includes(letter)).length;
-      
+  const wrongGuessedCount = guessedLetters.filter(
+    (letter) => !currentWord.includes(letter)
+  ).length;
+
+  const isGameWon =
+    new Set(currentWord).size ===
+    guessedLetters.filter((letter) => currentWord.includes(letter)).length;
+
   const isGameLost = wrongGuessedCount === 8;
-  
   const isGameOver = isGameWon || isGameLost;
 
-  let status;
-  let details;
+  useEffect(() => {
+    if (isGameWon) {
+      setStatus({
+        status: "You Win!",
+        details: "Well done!🎉"
+      });
+    } else if (isGameLost) {
+      setStatus({
+        status: "Game Over!",
+        details: "You lose! Better start learning Assembly 😭"
+      });
+      
+    } else if (wrongGuessedCount > prevWrongGuessedCount) {
+      
+      const farewellText = getFarewellText(
+        languages[wrongGuessedCount - 1].name
+      );
+
+      setStatus( {
+        status: "Oooops!",
+        details: `${farewellText} 😢`
+      });
+      
+    } 
+
+    setPrevWrongGuessedCount(wrongGuessedCount); 
+  }, [isGameWon, isGameLost, wrongGuessedCount]);
+
+  useEffect(() => {
+    if (guessedLetters.length > 0) {
+      const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+      
+      if (!currentWord.includes(lastGuessedLetter)) {
+        setLastGuessFeedback("wrong"); 
+      } else {
+        setLastGuessFeedback("correct"); 
+      }
+    }
+  }, [guessedLetters]); 
   
-  if (isGameWon) {
-    status = "You Win!"
-    details = "Well done!🎉"
-  } else if (isGameLost) {
-    status = "Game Over!"
-    details = "You lose! Better start learning Assembly 😭"
-  } 
+
   // Generates an array of keyboard keys object.
   function setKeyboardKeys() {
     const alph = "abcdefghijklmnopqrstuvwxyz";
-    return alph.split("").map((letter, index) => ({ id: index+1, letter: letter, state: ""}))
+    return alph.split("").map((letter, index) => ({
+      id: index + 1,
+      letter: letter,
+      state: "",
+    }));
   }
-  
-  // Takes a letter arguement and updates state of alphabet and guessedLetters.
+
+  // Takes a letter argument and updates state of alphabet and guessedLetters.
   function addGuessedLetter(newLetter) {
-    if (guessedLetters.includes(newLetter) || isGameOver) return
+    if (guessedLetters.includes(newLetter) || isGameOver) return;
 
-    setGuessedLetters( prevLetters => ([...prevLetters, newLetter]) ) 
+    setGuessedLetters((prevLetters) => [...prevLetters, newLetter]);
 
-    setAlphabet( prevAlphabet => prevAlphabet.map( 
-      letter => letter.letter === newLetter ? 
-      (currentWord.includes(newLetter) 
-      ? {...letter, state: "correct"} 
-      : {...letter, state: "incorrect"}) : 
-      letter
-    ))    
-    
-  }  
-  
-  
-  // Renders the Programming Languages 
-  const langChips = languages.map( (lang, index) => 
-    <LanguageChip 
+    setAlphabet((prevAlphabet) =>
+      prevAlphabet.map((letter) =>
+        letter.letter === newLetter
+          ? currentWord.includes(newLetter)
+            ? { ...letter, state: "correct" }
+            : { ...letter, state: "incorrect" }
+          : letter
+      )
+    );
+
+    // Check if the guessed letter is correct and update the status
+    if (currentWord.includes(newLetter)) {
+      setStatus({
+        status: "Well done!",
+        details: "Keep going! Save the world 🌎"
+      });
+    }
+  }
+
+  // Renders the Programming Languages
+  const langChips = languages.map((lang, index) => (
+    <LanguageChip
       key={lang.name}
       language={lang.name}
       color={lang.color}
-      backgroundColor={lang.backgroundColor} 
+      backgroundColor={lang.backgroundColor}
       isLost={index < wrongGuessedCount}
-    /> 
-  );
+    />
+  ));
 
   // Renders correctly guessed words
-  const letterBox = currentWord.map((letter, index) => 
-    <LetterBox 
-      key={index+1} 
-      letter={guessedLetters.includes(letter) ? letter : ""} 
+  const letterBox = currentWord.map((letter, index) => (
+    <LetterBox
+      key={index + 1}
+      letter={guessedLetters.includes(letter) ? letter : ""}
     />
-  );
+  ));
 
-  // Renders the Keyboard 
-  const keyboardElements = alphabet.map( key => 
-    <KeyboardKey 
-      key={key.id} 
-      keyButton={key.letter} 
+  // Renders the Keyboard
+  const keyboardElements = alphabet.map((key) => (
+    <KeyboardKey
+      key={key.id}
+      keyButton={key.letter}
       state={key.state}
       getKey={addGuessedLetter}
     />
-  )
-  
-  console.log(isGameWon)
+  ));
+
   const gameStatusClass = clsx("game-status", {
     won: isGameWon,
-    lost: isGameLost
-  })
+    lost: isGameLost,
+    rightGuess: lastGuessFeedback === "correct" && !isGameOver,
+    wrongGuess: lastGuessFeedback === "wrong" && !isGameOver,
+  });
+  
 
   return (
     <main>
       <header>
         <h1>Assembly: Endgame</h1>
         <p>
-          Guess the word within 8 attempts to keep the programming world safe from Assembly!
+          Guess the word within 8 attempts to keep the programming world safe
+          from Assembly!
         </p>
       </header>
       <section className={gameStatusClass}>
-        <GameStatus 
-          status={status} 
-          details={details} 
-        />
+        <GameStatus status={status.status} details={status.details} />
       </section>
-      <section className="language-chips">
-        {langChips}
-      </section>
-      <section className="word">
-        {letterBox}
-      </section>
-      <section className="keyboard">
-        {keyboardElements}
-      </section>
-      { isGameOver && <NewGameButton />}
+      <section className="language-chips">{langChips}</section>
+      <section className="word">{letterBox}</section>
+      <section className="keyboard">{keyboardElements}</section>
+      {isGameOver && <NewGameButton />}
     </main>
-  )
-}
+  );
+};
 
 export default AssemblyEndgame;

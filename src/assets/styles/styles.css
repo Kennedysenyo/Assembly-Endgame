@@ -148,3 +148,12 @@ button.new-game {
   background-color: #EC5D49 !important;
   color: white;
 }
+
+.wrongGuess {
+  background-color: #b71fb7 !important;
+}
+
+.rightGuess {
+  background-color: #FCBA29;
+  color: #323232 !important;
+}
