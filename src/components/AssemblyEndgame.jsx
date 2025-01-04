@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 const AssemblyEndgame = () => {
 
-  const [currentWord, setCurrentWord] = useState("refacto".split(""));
+  const [currentWord, setCurrentWord] = useState("refactor".split(""));
   const [guessedLetters, setGuessedLetters] = useState([])
   const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
   
