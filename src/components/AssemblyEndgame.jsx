@@ -4,10 +4,12 @@ import LanguageChip from "./LanguageChip"
 import LetterBox from "./LetterBox";
 import KeyboardKey from "./KeyboardKey";
 import NewGameButton from "./NewGameButton";
+import GameStatus from "./GameStatus";
+import clsx from "clsx";
 
 const AssemblyEndgame = () => {
 
-  const [currentWord, setCurrentWord] = useState("react".split(""));
+  const [currentWord, setCurrentWord] = useState("refacto".split(""));
   const [guessedLetters, setGuessedLetters] = useState([])
   const [alphabet, setAlphabet] = useState(() => setKeyboardKeys())
   
@@ -15,13 +17,24 @@ const AssemblyEndgame = () => {
   const wrongGuessedCount = guessedLetters.filter( 
     letter => !currentWord.includes(letter)).length;
   
-  const isGameWon = (guessedLetters.filter(letter => 
-    currentWord.includes(letter))).length === currentWord.length;
+  const isGameWon = new Set(currentWord).size === 
+    guessedLetters.filter(letter => 
+      currentWord.includes(letter)).length;
       
   const isGameLost = wrongGuessedCount === 8;
   
   const isGameOver = isGameWon || isGameLost;
-    
+
+  let status;
+  let details;
+  
+  if (isGameWon) {
+    status = "You Win!"
+    details = "Well done!🎉"
+  } else if (isGameLost) {
+    status = "Game Over!"
+    details = "You lose! Better start learning Assembly 😭"
+  } 
   // Generates an array of keyboard keys object.
   function setKeyboardKeys() {
     const alph = "abcdefghijklmnopqrstuvwxyz";
@@ -73,6 +86,12 @@ const AssemblyEndgame = () => {
       getKey={addGuessedLetter}
     />
   )
+  
+  console.log(isGameWon)
+  const gameStatusClass = clsx("game-status", {
+    won: isGameWon,
+    lost: isGameLost
+  })
 
   return (
     <main>
@@ -82,9 +101,11 @@ const AssemblyEndgame = () => {
           Guess the word within 8 attempts to keep the programming world safe from Assembly!
         </p>
       </header>
-      <section className="game-status">
-        <h2>You win!</h2>
-        <p>Well done!🎉</p>
+      <section className={gameStatusClass}>
+        <GameStatus 
+          status={status} 
+          details={details} 
+        />
       </section>
       <section className="language-chips">
         {langChips}
