@@ -14,9 +14,14 @@ const AssemblyEndgame = () => {
 
   const wrongGuessedCount = guessedLetters.filter( 
     letter => !currentWord.includes(letter)).length;
-  console.log(wrongGuessedCount)
+  
+  const isGameWon = (guessedLetters.filter(letter => 
+    currentWord.includes(letter))).length === currentWord.length;
+      
+  const isGameLost = wrongGuessedCount === 8;
+  
+  const isGameOver = isGameWon || isGameLost;
     
-
   // Generates an array of keyboard keys object.
   function setKeyboardKeys() {
     const alph = "abcdefghijklmnopqrstuvwxyz";
@@ -25,7 +30,7 @@ const AssemblyEndgame = () => {
   
   // Takes a letter arguement and updates state of alphabet and guessedLetters.
   function addGuessedLetter(newLetter) {
-    if (guessedLetters.includes(newLetter)) return
+    if (guessedLetters.includes(newLetter) || isGameOver) return
 
     setGuessedLetters( prevLetters => ([...prevLetters, newLetter]) ) 
 
@@ -90,7 +95,7 @@ const AssemblyEndgame = () => {
       <section className="keyboard">
         {keyboardElements}
       </section>
-      <NewGameButton />
+      { isGameOver && <NewGameButton />}
     </main>
   )
 }
