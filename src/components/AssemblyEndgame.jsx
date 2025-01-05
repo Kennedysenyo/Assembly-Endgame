@@ -58,9 +58,10 @@ const AssemblyEndgame = () => {
     setPrevWrongGuessedCount(wrongGuessedCount); 
   }, [isGameWon, isGameLost, wrongGuessedCount]);
 
+  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+  const numGuessesLeft = (languages.length-1) - wrongGuessedCount
   useEffect(() => {
     if (guessedLetters.length > 0) {
-      const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
       
       if (!currentWord.includes(lastGuessedLetter)) {
         setLastGuessFeedback("wrong"); 
@@ -129,6 +130,9 @@ const AssemblyEndgame = () => {
   const keyboardElements = alphabet.map((key) => (
     <KeyboardKey
       key={key.id}
+      disabled={isGameOver}
+      ariaDisabled={guessedLetters.includes(key)}
+      ariaLabel={`Letter ${key}`}
       keyButton={key.letter}
       state={key.state}
       getKey={addGuessedLetter}
@@ -152,11 +156,29 @@ const AssemblyEndgame = () => {
           from Assembly!
         </p>
       </header>
-      <section className={gameStatusClass}>
+      <section aria-live="polite" role="status" className={gameStatusClass}>
         <GameStatus status={status.status} details={status.details} />
       </section>
       <section className="language-chips">{langChips}</section>
       <section className="word">{letterBox}</section>
+
+    {/* Combined visually-hidden aria-live region for status updates */}
+      <section className="sr-only" aria-live="polite" role="status">
+
+        <p>
+          {
+          currentWord.includes(lastGuessedLetter)
+          ? `Correct! The letter ${lastGuessedLetter} is in the word`
+          : `Sorry, the letter ${lastGuessedLetter} is not in the word.` 
+          }
+          You have {numGuessesLeft} attempts left.
+        </p>
+        <p>
+          Current word: {currentWord.map( letter => 
+          guessedLetters.includes(letter) ? letter + "." : "blank.").join(" ")}
+        </p>
+
+      </section>
       <section className="keyboard">{keyboardElements}</section>
       {isGameOver && <NewGameButton />}
     </main>

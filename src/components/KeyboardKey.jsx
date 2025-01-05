@@ -6,6 +6,9 @@ import clsx from "clsx";
     <button 
       className={clsx(props.state)}
       onClick={() => props.getKey(props.keyButton)}
+      disabled={props.disabled}
+      aria-label={props.ariaLabel}
+      aria-disabled={props.ariaDisabled}
     >
       {props.keyButton}
     </button>
