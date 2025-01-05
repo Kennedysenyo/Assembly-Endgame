@@ -7,9 +7,10 @@ import NewGameButton from "./NewGameButton";
 import GameStatus from "./GameStatus";
 import clsx from "clsx";
 import { getFarewellText } from "../utils";
+import { words } from "../words";
 
 const AssemblyEndgame = () => {
-  const [currentWord, setCurrentWord] = useState("refactor".split(""));
+  const [currentWord, setCurrentWord] = useState(() => getSecretWord());
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [alphabet, setAlphabet] = useState(() => setKeyboardKeys());
   const [status, setStatus] = useState({
@@ -18,6 +19,10 @@ const AssemblyEndgame = () => {
   });
   const [prevWrongGuessedCount, setPrevWrongGuessedCount] = useState(0);
   const [lastGuessFeedback, setLastGuessFeedback] = useState("");
+
+  function getSecretWord() {
+    return words[Math.floor(Math.random() * words.length)].split("")
+  }
 
   const wrongGuessedCount = guessedLetters.filter(
     (letter) => !currentWord.includes(letter)
@@ -58,8 +63,10 @@ const AssemblyEndgame = () => {
     setPrevWrongGuessedCount(wrongGuessedCount); 
   }, [isGameWon, isGameLost, wrongGuessedCount]);
 
+
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
   const numGuessesLeft = (languages.length-1) - wrongGuessedCount
+
   useEffect(() => {
     if (guessedLetters.length > 0) {
       
