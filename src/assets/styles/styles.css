@@ -32,6 +32,7 @@ header > p {
   font-size: 0.875rem;
   color: #8E8E8E;
   margin: 0 auto;
+  max-width: 350px;
 }
 
 section {
@@ -66,6 +67,7 @@ section.game-status > h2 {
 
 section.game-status > p {
   margin: 5px;
+  
 }
 
 section.language-chips {
@@ -159,12 +161,16 @@ button.new-game {
 
 .correct {
   background-color: #10A95B !important;
-  color: white;
+  color: #D9D9D9;
 }
 
 .incorrect {
   background-color: #EC5D49 !important;
-  color: white;
+  color: #D9D9D9;
+}
+
+.reveal {
+  color: #EC5D49;
 }
 
 .wrongGuess {
@@ -175,3 +181,4 @@ button.new-game {
   background-color: #FCBA29;
   color: #323232 !important;
 }
+

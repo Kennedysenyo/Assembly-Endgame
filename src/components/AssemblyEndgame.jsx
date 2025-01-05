@@ -27,7 +27,6 @@ const AssemblyEndgame = () => {
   const wrongGuessedCount = guessedLetters.filter(
     (letter) => !currentWord.includes(letter)
   ).length;
-  console.log(wrongGuessedCount)
 
   const isGameWon =
     new Set(currentWord).size ===
@@ -139,11 +138,16 @@ const AssemblyEndgame = () => {
     />
   ));
 
+  // Find the missing letters
+  const missingLetters = 
+    currentWord.filter( letter => !guessedLetters.includes(letter))
+
   // Renders correctly guessed words
   const letterBox = currentWord.map((letter, index) => (
     <LetterBox
       key={index + 1}
-      letter={guessedLetters.includes(letter) ? letter : ""}
+      letter={guessedLetters.includes(letter) ? letter : (isGameLost ? letter : "")}
+      isGameLost={isGameLost && missingLetters.includes(letter)}
     />
   ));
 
