@@ -8,6 +8,8 @@ import GameStatus from "./GameStatus";
 import clsx from "clsx";
 import { getFarewellText } from "../utils";
 import { words } from "../words";
+import {useWindowSize} from "react-use"
+import ReactConfetti from "react-confetti"
 
 const AssemblyEndgame = () => {
   const [currentWord, setCurrentWord] = useState(() => getSecretWord());
@@ -172,8 +174,18 @@ const AssemblyEndgame = () => {
   });
   
 
+  const {width, height} = useWindowSize()
   return (
     <main>
+      {
+        isGameWon && 
+          <ReactConfetti 
+            width={width} 
+            height={height}
+            recycle={false}
+            numberOfPieces={1000}
+          />
+      }
       <header>
         <h1>Assembly: Endgame</h1>
         <p>
