@@ -27,6 +27,7 @@ const AssemblyEndgame = () => {
   const wrongGuessedCount = guessedLetters.filter(
     (letter) => !currentWord.includes(letter)
   ).length;
+  console.log(wrongGuessedCount)
 
   const isGameWon =
     new Set(currentWord).size ===
@@ -114,6 +115,19 @@ const AssemblyEndgame = () => {
     }
   }
 
+  // ResetGame function
+  function resetGame() {
+    setCurrentWord(getSecretWord())
+    setGuessedLetters([])
+    setAlphabet(setKeyboardKeys())
+    setStatus({
+      statu:"",
+      details: ""
+    })
+    setPrevWrongGuessedCount(0)
+    setLastGuessFeedback("")
+  }
+
   // Renders the Programming Languages
   const langChips = languages.map((lang, index) => (
     <LanguageChip
@@ -187,7 +201,7 @@ const AssemblyEndgame = () => {
 
       </section>
       <section className="keyboard">{keyboardElements}</section>
-      {isGameOver && <NewGameButton />}
+      {isGameOver && <NewGameButton resetGame={resetGame} />}
     </main>
   );
 };

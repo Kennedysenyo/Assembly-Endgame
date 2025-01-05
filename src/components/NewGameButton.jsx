@@ -1,6 +1,6 @@
 
-export default function NewGameButton() {
+export default function NewGameButton(props) {
   return(
-    <button className="new-game">New Game</button>
+    <button onClick={() => props.resetGame()} className="new-game">New Game</button>
   )
 }
